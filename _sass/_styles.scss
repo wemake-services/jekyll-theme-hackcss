@@ -1,11 +1,21 @@
 // This file contains custom (non hack.css) styles
 
-.t-hackcss {  // Main prefix
+.t-hackcss {  // Main prefix to avoid collisions
 
   // navigation.html
 
   &-navigation {
     padding-right: $spacing-unit;
+  }
+
+  @at-root .hack &-navigation-heading {
+    padding-top: 20px;
+  }
+
+  // footer.html
+
+  @at-root body &-footer {
+    padding-bottom: $spacing-unit;
   }
 
   &-social {

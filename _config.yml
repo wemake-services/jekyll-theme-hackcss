@@ -21,7 +21,7 @@ sass:
   style: compressed
 
 # Theme settings
-theme_mode: standard  # choices are: 'dark', 'standard', 'markdown'
+theme_mode: markdown  # choices are: 'dark', 'standard', 'markdown'
 
 # Customizations
 your_name: wemake.services
