@@ -58,3 +58,7 @@ social:
   - service: twitter
     username: sobolevn
     link: https://twitter.com/sobolevn
+
+# Plugins
+gems:
+  - jekyll-seo-tag
