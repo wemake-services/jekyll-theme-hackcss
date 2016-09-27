@@ -8,7 +8,7 @@
 # Site settings
 title: jekyll-theme-hackcss
 description: > # this means to ignore newlines until "baseurl:"
-  A minimalistic theme for Jekyll, based on hack.css
+  La Frikitiva - Blog personal de un profesor de lenguas en Dinamarca.
 repository: https://github.com/wemake-services/jekyll-theme-hackcss
 baseurl: /jekyll-theme-hackcss  # the subpath of your site, e.g. /blog
 url: https://wemake-services.github.io  # the base hostname & protocol for your site
@@ -24,8 +24,8 @@ sass:
 theme_mode: markdown  # choices are: 'dark', 'standard', 'markdown'
 
 # Customizations
-your_name: wemake.services
-email: mail@sobolevn.me
+your_name: La Frikitiva
+email: admin@lafrikitiva.com
 
 navigation:
   - text: Home
@@ -53,11 +53,11 @@ projects:
 
 social:
   - service: github
-    username: sobolevn
-    link: https://github.com/sobolevn
+    username: frikitiva
+    link: https://github.com/frikitiva
   - service: twitter
-    username: sobolevn
-    link: https://twitter.com/sobolevn
+    username: frikitiva
+    link: https://twitter.com/frikitiva
 
 # Plugins
 gems:
