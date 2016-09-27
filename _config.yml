@@ -9,7 +9,7 @@
 title: jekyll-theme-hackcss
 description: > # this means to ignore newlines until "baseurl:"
   La Frikitiva - Blog personal de un profesor de lenguas en Dinamarca.
-repository: https://github.com/wemake-services/jekyll-theme-hackcss
+repository: https://github.com/frikitiva/frikitiva.github.io
 baseurl:  /  # the subpath of your site, e.g. /blog
 url: http://lafrikitiva.com  # the base hostname & protocol for your site
 
