@@ -29,10 +29,10 @@ email: avadacatavra@gmail.com
 navigation:
   - text: Home
     url: /
-  - text: Docs
-    url: /docs
-  - text: Examples
-    url: /examples
+  - text: Posts 
+    url: /posts
+  - text: CV
+    url: /cv
 
 projects:
   - name: git-secret
