@@ -16,6 +16,7 @@ I decided to run [cipherscan](https://github.com/mozilla/cipherscan) and get som
 You can see the full results [here](http://pastebin.com/aCazxpAq), but I'll highlight what I consider the most interesting in this case.
 
 ## Ciphers
+
 Supported Ciphers        | Count     |Percent
 -------------------------|---------|-------
 3DES                      |472578    |87.0229
@@ -38,6 +39,7 @@ RC4 Preferred             |11067     |2.0379
 RC4 forced in TLS1.1+     |6031      |1.1106
 
 ## Protocols
+
 Supported Protocols       |Count    | Percent
 -------------------------|---------|-------
 SSL2                      |12822     |2.3611
@@ -67,6 +69,7 @@ RSA                       |472454    |87.0001
 
 
 ## Certificates
+
 Certificate sig alg     |Count     |Percent 
 -------------------------|---------|--------
 None                      |9328      |1.7177   
