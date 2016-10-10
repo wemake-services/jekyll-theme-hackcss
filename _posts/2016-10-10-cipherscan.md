@@ -86,7 +86,7 @@ Unsupported               |410836    |75.6534
 
 # Discussion
 
-I initially compiled these stats because the Servo community brought up the possibility of using [rustls](https://github.com/ctz/rustls)() in Servo. Currently, rustls only supports TLS1.2, so it seemed like a good time to get some updated cipherscan results. Over 10% of the sites surveyed only supported TLS1.1 or lower. In a production browser, this would be way too high.
+I initially compiled these stats because the Servo community brought up the possibility of using [rustls](https://github.com/ctz/rustls)([hyper crate](https://libraries.io/cargo/hyper-rustls)) in Servo. Currently, rustls only supports TLS1.2, so it seemed like a good time to get some updated cipherscan results. Over 10% of the sites surveyed only supported TLS1.1 or lower. In a production browser, this would be way too high.
 
 Mostly, I think these numbers can be useful for prioritization right now.
 
