@@ -7,7 +7,7 @@ short_description: cipherscan results and discussion
 image_preview: http://ih0.redbubble.net/image.10706037.1609/flat,800x800,070,f.u2.jpg
 ---
 
-# Cipherscan
+# Web Compatibility and TLS
 During a dev-servo discussion about the merits of various TLS libraries, the question of web compatibility came up--what cryptographic protocols does Servo need to support in order to serve most of the web?
 
 I decided to run [cipherscan](https://github.com/mozilla/cipherscan) and get some updated results.
@@ -86,7 +86,7 @@ Unsupported               |410836    |75.6534
 
 # Discussion
 
-I initially compiled these stats because the Servo community brought up the possibility of using [rustls](https://github.com/ctz/rustls)([hyper crate](https://libraries.io/cargo/hyper-rustls)) in Servo. Currently, rustls only supports TLS1.2, so it seemed like a good time to get some updated cipherscan results. Over 10% of the sites surveyed only supported TLS1.1 or lower. In a production browser, this would be way too high.
+I initially compiled these stats because the Servo community brought up the possibility of using [rustls](https://github.com/ctz/rustls) ([hyper crate](https://libraries.io/cargo/hyper-rustls)) in Servo. Currently, rustls only supports TLS1.2, so it seemed like a good time to get some updated cipherscan results. Over 10% of the sites surveyed only supported TLS1.1 or lower. In a production browser, this would be way too high.
 
 Mostly, I think these numbers can be useful for prioritization right now.
 
