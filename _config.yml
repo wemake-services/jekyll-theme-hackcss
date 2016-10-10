@@ -29,8 +29,6 @@ email: avadacatavra@gmail.com
 navigation:
   - text: Home
     url: /
-  - text: Posts 
-    url: /posts
   - text: CV
     url: /cv
 
