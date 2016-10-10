@@ -6,12 +6,11 @@
 # 'jekyll serve'. If you change this file, please restart the server process.
 
 # Site settings
-title: jekyll-theme-hackcss
+title: Cats and security and stuff 
 description: > # this means to ignore newlines until "baseurl:"
-  A minimalistic theme for Jekyll, based on hack.css
-repository: https://github.com/wemake-services/jekyll-theme-hackcss
-baseurl: /jekyll-theme-hackcss  # the subpath of your site, e.g. /blog
-url: https://wemake-services.github.io  # the base hostname & protocol for your site
+  Musings on cats, Servo, security, etc.
+baseurl: ""  # the subpath of your site, e.g. /blog
+url: ""  # the base hostname & protocol for your site
 
 # Build settings
 markdown: kramdown
@@ -24,8 +23,8 @@ sass:
 theme_mode: markdown  # choices are: 'dark', 'standard', 'markdown'
 
 # Customizations
-your_name: wemake.services
-email: mail@sobolevn.me
+your_name: Diane Hosfelt
+email: avadacatavra@gmail.com
 
 navigation:
   - text: Home
@@ -53,12 +52,13 @@ projects:
 
 social:
   - service: github
-    username: sobolevn
-    link: https://github.com/sobolevn
+    username: avadacatavra
+    link: https://github.com/avadacatavra
   - service: twitter
-    username: sobolevn
-    link: https://twitter.com/sobolevn
+    username: avadacatavra
+    link: https://twitter.com/avadacatavra
 
 # Plugins
 gems:
   - jekyll-seo-tag
+
