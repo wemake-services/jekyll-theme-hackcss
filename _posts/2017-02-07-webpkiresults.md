@@ -60,9 +60,14 @@ The sites I picked for testing were the 8 featured on servo's front page, plus a
 * [washington post](https://washingtonpost.com)
 * [stack overflow](https://stackoverflow.com)
 
-site | method | roots creation | http connector creation | openssl/rustls verify call | total verification time | total connection time
+# Results
+
+Times are shown in ms. I'm not sure what happened with hackernews-rustlsserial, and I'll try to get new numbers for it.
+
+I compared results for total connection time and total verification time. For total connection time, openssl was fastest for 5/12 (excluding hackernews) sites, rustlsserial was fastest for 4, and rustlsparallel for the remaining 3. For overall verification time, openssl was fastest for 11 sites, and rustlsparallel was fastest on washingtonpost.com. 
+
+site | method | roots creation | http connector creation | openssl/rustls verify call | total connection time | total verification time
 --------------------|--------|-------|------|------|-------|------
-site | method | roots-creation (ms) | http-connector-creation | openssl-verif-call/ rustls-verif-call | connection | total-openssl-verify total-rustls-verify
 arstechnica | openssl | 6.5937645 | 3.06476595 | 0.04212679 | 7.63642713 | 0.11863110
 arstechnica | rustlsparallel | 0.6452306 | 1.8578739 | 0.9613585 | 10.6051663 | 0.9679321
 arstechnica | rustlsserial | 1.7092342 | 4.8119877 | 0.8465297 | 17.3814024 | 0.8523814
@@ -80,7 +85,7 @@ google | rustlsparallel | 0.4081303 | 2.2226142 | 0.2490465 | 4.9481365 | 0.2554
 google | rustlsserial | 0.7276384 | 2.8976474 | 0.2454053 | 4.8469683 | 0.2522257
 hackernews | openssl | 0.5978065 | 2.74829625 | 0.00170511 | 4.20313573 | 0.00576318
 hackernews | rustlsparallel | 0.4728535 | 2.7132263 | 0.6241498 | 4.1972928 | 0.6394845
-hackernews | rustlsserial | 2.3374316 | 0.0000000 | 0.0000000 | 0.4007136 | 0.0000000
+hackernews | rustlsserial | 2.3374316 | 0.4007136 |  |  | |
 reddit | openssl | 0.3964899 | 2.13715120 | 0.08706821 | 7.40169574 | 0.21397945
 reddit | rustlsparallel | 0.5623264 | 2.4189925 | 1.9196810 | 7.1750911 | 1.9263490
 reddit | rustlsserial | 0.5554853 | 2.4069789 | 0.3140017 | 5.6085587 | 0.3186888
@@ -102,4 +107,11 @@ wapo | rustlsserial | 0.5703944 | 3.0341653 | 0.5972499 | 7.0022414 | 0.6031256
 wikipedia | openssl | 0.5330987 | 2.39788525 | 0.00302343 | 5.13799420 | 0.00806534
 wikipedia | rustlsparallel | 0.4611093 | 2.5344541 | 0.4680453 | 4.9266177 | 0.4759743
 wikipedia | rustlsserial | 0.4883241 | 1.9458110 | 0.4012761 | 4.9726309 | 0.4095681
+
+# Next steps
+
+1. webpki benchmarks [ECDSA](https://github.com/briansmith/crypto-bench/issues/25) [RSA](https://github.com/briansmith/crypto-bench/issues/24)
+2. parallel signature verification [webpki](https://github.com/briansmith/webpki/issues/37)
+3. Improve test set and method (this started out as an adhoc measurement, but now seems like it could yield useful data as development continues)
+
 
