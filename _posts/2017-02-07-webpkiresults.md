@@ -62,11 +62,13 @@ The sites I picked for testing were the 8 featured on servo's front page, plus a
 
 # Results
 
-Times are shown in ms. I'm not sure what happened with hackernews-rustlsserial, and I'll try to get new numbers for it.
+I'm not sure what happened with hackernews-rustlsserial, and I'll try to get new numbers for it.
 
 I compared results for total connection time and total verification time. For total connection time, openssl was fastest for 5/12 (excluding hackernews) sites, rustlsserial was fastest for 4, and rustlsparallel for the remaining 3. For overall verification time, openssl was fastest for 11 sites, and rustlsparallel was fastest on washingtonpost.com. 
 
 It's interesting that openssl was almost uniformly quicker at just performing verification, but not for establishing a connection. I'm not sure why this would be. If anyone has ideas, let me know :)
+
+Times are shown in ms.
 
 site | method | roots creation | http connector creation | openssl/rustls verify call | total connection time | total verification time
 --------------------|--------|-------|------|------|-------|------
