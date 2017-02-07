@@ -43,62 +43,63 @@ There are two versions of Rustls that I tested on--one does all verification ste
 
 The sites I picked for testing were the 8 featured on servo's front page, plus a few I frequently use. Most of them use TLS ECDHE RSA with AES 128 GCM SHA256 and 128 bit keys, except those noted below
 
-* [duck duck go]()
-* [github]()
-* [wikipedia]()
- * TLS ECDHE ECDSA with CHACHA20 POLY1305 SHA256, 256 bit keys
-* [ars technica]()
-* [reddit]()
-* [rust]()
-* [servo]()
- * TLS AES 128 GCM SHA256 TLS 1.3
-* [hacker news]()
-* [twitter]()
-* [cnn]()
- * no encryption
-* [google]()
-* [washington post]()
-* [stack overflow]()
+* [duck duck go](https://duckduckgo.com)
+* [github](https://github.com)
+* [wikipedia](https://wikipedia.com)
+  * TLS ECDHE ECDSA with CHACHA20 POLY1305 SHA256, 256 bit keys
+* [ars technica](https://arstechnica.com/)
+* [reddit](https://reddit.com)
+* [rust](https://rustlang.org)
+* [servo](https://servo.org)
+  * TLS AES 128 GCM SHA256 TLS 1.3
+* [hacker news](https://news.ycombinator.com/)
+* [twitter](https://twitter.com)
+* [cnn](https://cnn.com)
+  * no encryption
+* [google](https://google.co.uk)
+* [washington post](https://washingtonpost.com)
+* [stack overflow](https://stackoverflow.com)
 
 site | method | roots creation | http connector creation | openssl/rustls verify call | total verification time | total connection time
 --------------------|--------|-------|------|------|-------|------
+site | method | roots-creation (ms) | http-connector-creation | openssl-verif-call/ rustls-verif-call | connection | total-openssl-verify total-rustls-verify
 arstechnica | openssl | 6.5937645 | 3.06476595 | 0.04212679 | 7.63642713 | 0.11863110
-arstechnica | rustlsparallel | 0.6452306 | 1.8578739 |  | 10.6051663 | 0.9679321
-arstechnica | rustlsserial | 1.7092342 | 4.8119877 |  | 17.3814024 | 0.8523814
+arstechnica | rustlsparallel | 0.6452306 | 1.8578739 | 0.9613585 | 10.6051663 | 0.9679321
+arstechnica | rustlsserial | 1.7092342 | 4.8119877 | 0.8465297 | 17.3814024 | 0.8523814
 cnn | openssl | 0.5902370 | 3.33709690 | 0.00156567 | 5.87286853 | 0.00410566
-cnn | rustlsparallel | 0.4306289 | 2.5159100 |  | 9.7441715 | 0.3259468
-cnn | rustlsserial | 0.5596800 | 2.3019310 |  | 6.2241893 | 0.2915407
+cnn | rustlsparallel | 0.4306289 | 2.5159100 | 0.3190672 | 9.7441715 | 0.3259468
+cnn | rustlsserial | 0.5596800 | 2.3019310 | 0.2837703 | 6.2241893 | 0.2915407
 duckduckgo | openssl | 0.5305152 | 2.91319830 | 0.00221078 | 7.69686665 | 0.00550160
-duckduckgo | rustlsparallel | 0.4963679 | 3.2570464 |  | 6.4144129 | 0.4383328
-duckduckgo | rustlsserial | 0.5634392 | 2.5714297 |  | 5.4416704 | 0.2206577
+duckduckgo | rustlsparallel | 0.4963679 | 3.2570464 | 0.4329721 | 6.4144129 | 0.4383328
+duckduckgo | rustlsserial | 0.5634392 | 2.5714297 | 2.1426261 | 5.4416704 | 0.2206577
 github | openssl | 0.5259603 | 2.41714400 | 0.00726623 | 10.90148742 | 0.01794724
-github | rustlsparallel | 0.4670057 | 2.2619585 |  | 14.1635926 | 5.4348146
-github | rustlsserial | 0.4736196 | 2.9527882 |  | 20.3668883 | 0.5584827
+github | rustlsparallel | 0.4670057 | 2.2619585 | 5.4297168 | 14.1635926 | 5.4348146
+github | rustlsserial | 0.4736196 | 2.9527882 | 0.5425635 | 20.3668883 | 0.5584827
 google | openssl | 0.4657012 | 3.11720415 | 0.00158668 | 5.99938325 | 0.00500675
-google | rustlsparallel | 0.4081303 | 2.2226142 |  | 4.9481365 | 0.2554819
-google | rustlsserial | 0.7276384 | 2.8976474 |  | 4.8469683 | 0.2522257
+google | rustlsparallel | 0.4081303 | 2.2226142 | 0.2490465 | 4.9481365 | 0.2554819
+google | rustlsserial | 0.7276384 | 2.8976474 | 0.2454053 | 4.8469683 | 0.2522257
 hackernews | openssl | 0.5978065 | 2.74829625 | 0.00170511 | 4.20313573 | 0.00576318
-hackernews | rustlsparallel | 0.4728535 | 2.7132263 |  | 4.1972928 | 0.6394845
-hackernews | rustlsserial | 2.3374316 | 0.0000000 |  | 0.4007136 | 0.0000000
+hackernews | rustlsparallel | 0.4728535 | 2.7132263 | 0.6241498 | 4.1972928 | 0.6394845
+hackernews | rustlsserial | 2.3374316 | 0.0000000 | 0.0000000 | 0.4007136 | 0.0000000
 reddit | openssl | 0.3964899 | 2.13715120 | 0.08706821 | 7.40169574 | 0.21397945
-reddit | rustlsparallel | 0.5623264 | 2.4189925 |  | 7.1750911 | 1.9263490
-reddit | rustlsserial | 0.5554853 | 2.4069789 |  | 5.6085587 | 0.3186888
+reddit | rustlsparallel | 0.5623264 | 2.4189925 | 1.9196810 | 7.1750911 | 1.9263490
+reddit | rustlsserial | 0.5554853 | 2.4069789 | 0.3140017 | 5.6085587 | 0.3186888
 rust | openssl | 0.4763279 | 2.50936690 | 0.00071792 | 5.00488759 | 0.00246496
-rust | rustlsparallel | 0.5137190 | 2.8609235 |  | 6.2613387 | 0.8308361
-rust | rustlsserial | 0.7270381 | 2.8080940 |  | 5.9658525 | 0.7529244
+rust | rustlsparallel | 0.5137190 | 2.8609235 | 0.8248997 | 6.2613387 | 0.8308361
+rust | rustlsserial | 0.7270381 | 2.8080940 | 0.7364159 | 5.9658525 | 0.7529244
 servo | openssl | 0.4126936 | 2.46113245 | 0.01265213 | 3.54343740 | 0.04969500
-servo | rustlsparallel | 0.3729247 | 2.2147630 |  | 4.2786723 | 0.4297226
-servo | rustlsserial | 0.4271293 | 2.6142965 |  | 5.1212375 | 0.5624017
+servo | rustlsparallel | 0.3729247 | 2.2147630 | 0.4230856 | 4.2786723 | 0.4297226
+servo | rustlsserial | 0.4271293 | 2.6142965 | 0.5498572 | 5.1212375 | 0.5624017
 stack overflow | openssl | 0.4872833 | 2.54147045 | 0.00214393 | 6.69359618 | 0.00602048
-stackoverflow | rustlsparallel | 0.6955762 | 2.4821835 |  | 4.6982153 | 0.3459493
-stackoverflow | rustlsserial | 0.6805226 | 2.6676572 |  | 5.4262767 | 0.3090781
+stackoverflow | rustlsparallel | 0.6955762 | 2.4821835 | 0.3383331 | 4.6982153 | 0.3459493
+stackoverflow | rustlsserial | 0.6805226 | 2.6676572 | 0.3023453 | 5.4262767 | 0.3090781
 twitter | openssl | 0.5633570 | 3.06855305 | 0.00996953 | 25.13172682 | 0.02554954
-twitter | rustlsparallel | 0.4326043 | 2.1039143 |  | 16.1298042 | 2.9300035
-twitter | rustlsserial | 0.5732324 | 2.8023081 |  | 14.1060498 | 4.0807530
+twitter | rustlsparallel | 0.4326043 | 2.1039143 | 2.9250449 | 16.1298042 | 2.9300035
+twitter | rustlsserial | 0.5732324 | 2.8023081 | 4.0729707 | 14.1060498 | 4.0807530
 wapo | openssl | 5.2944900 | 2.82199855 | 0.18614084 | 8.39432315 | 0.63647240
-wapo | rustlsparallel | 0.3269752 | 2.2430216 |  | 6.2113378 | 0.5317807
-wapo | rustlsserial | 0.5703944 | 3.0341653 |  | 7.0022414 | 0.6031256
+wapo | rustlsparallel | 0.3269752 | 2.2430216 | 0.5247874 | 6.2113378 | 0.5317807
+wapo | rustlsserial | 0.5703944 | 3.0341653 | 0.5972499 | 7.0022414 | 0.6031256
 wikipedia | openssl | 0.5330987 | 2.39788525 | 0.00302343 | 5.13799420 | 0.00806534
-wikipedia | rustlsparallel | 0.4611093 | 2.5344541 |  | 4.9266177 | 0.4759743
-wikipedia | rustlsserial | 0.4883241 | 1.9458110 |  | 4.9726309 | 0.4095681
+wikipedia | rustlsparallel | 0.4611093 | 2.5344541 | 0.4680453 | 4.9266177 | 0.4759743
+wikipedia | rustlsserial | 0.4883241 | 1.9458110 | 0.4012761 | 4.9726309 | 0.4095681
 
