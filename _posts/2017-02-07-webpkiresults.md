@@ -66,6 +66,8 @@ Times are shown in ms. I'm not sure what happened with hackernews-rustlsserial, 
 
 I compared results for total connection time and total verification time. For total connection time, openssl was fastest for 5/12 (excluding hackernews) sites, rustlsserial was fastest for 4, and rustlsparallel for the remaining 3. For overall verification time, openssl was fastest for 11 sites, and rustlsparallel was fastest on washingtonpost.com. 
 
+It's interesting that openssl was almost uniformly quicker at just performing verification, but not for establishing a connection. I'm not sure why this would be. If anyone has ideas, let me know :)
+
 site | method | roots creation | http connector creation | openssl/rustls verify call | total connection time | total verification time
 --------------------|--------|-------|------|------|-------|------
 arstechnica | openssl | 6.5937645 | 3.06476595 | 0.04212679 | 7.63642713 | 0.11863110
@@ -90,7 +92,7 @@ reddit | openssl | 0.3964899 | 2.13715120 | 0.08706821 | 7.40169574 | 0.21397945
 reddit | rustlsparallel | 0.5623264 | 2.4189925 | 1.9196810 | 7.1750911 | 1.9263490
 reddit | rustlsserial | 0.5554853 | 2.4069789 | 0.3140017 | 5.6085587 | 0.3186888
 rust | openssl | 0.4763279 | 2.50936690 | 0.00071792 | 5.00488759 | 0.00246496
-rust | rustlsparallel | 0.5137190 | 2.8609235 | 0.8248997 | 6.2613387 | 0.8308361
+rust | rustlsparallel | 0.5137190 | 2.8609235 | 0.8248997 | 6.2613387 | i0.8308361
 rust | rustlsserial | 0.7270381 | 2.8080940 | 0.7364159 | 5.9658525 | 0.7529244
 servo | openssl | 0.4126936 | 2.46113245 | 0.01265213 | 3.54343740 | 0.04969500
 servo | rustlsparallel | 0.3729247 | 2.2147630 | 0.4230856 | 4.2786723 | 0.4297226
