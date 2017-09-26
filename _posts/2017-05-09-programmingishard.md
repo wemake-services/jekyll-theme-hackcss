@@ -3,8 +3,8 @@ layout: post
 title: Programming is (NP?) Hard 
 date: 2017-05-09 16:48:00
 categories: programming
-short_description: It's really easy to make "silly" mistakes
-image_preview: https://pbs.twimg.com/profile_images/3074406340/16ba89878ed12c976424200c68233693_400x400.png 
+short_description: code review is good
+image_preview: http://www.i-programmer.info/images/stories/News/2012/FEB/B/PhysicsNPHard.jpg
 ---
 
 tl;dr;
