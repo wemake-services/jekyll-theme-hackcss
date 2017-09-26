@@ -1,10 +1,10 @@
 ---
 layout: post
 title: Attacking Rust for Fun and Profit
-date: 2017-09-25 18:00:00
+date: 2017-09-26 2:00:00
 categories: rust, gdb, exploit
 short_description: trying to exploit rust with gdb
-image_preview: {{ site.url }}/assets/anvil.jpg
+image_preview: http://fazewp.fazemediainc.netdna-cdn.com/cms/wp-content/uploads/2015/06/coyote-3-2.jpg
 ---
 
 # Motivation
