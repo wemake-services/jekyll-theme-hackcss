@@ -241,7 +241,9 @@ The frame looks like this:
 (gdb) p &buf
 $5 = (alloc::string::String *) 0x7fff5fbff958
 (gdb) p buf
-$6 = alloc::string::String {vec: alloc::vec::Vec<u8> {buf: alloc::raw_vec::RawVec<u8, alloc::heap::Heap> {ptr: core::ptr::Unique<u8> {pointer: core::nonzero::NonZero<*const u8> (0x100624000 "hello\000"), _marker: core::marker::PhantomData<u8>}, cap: 100, a: alloc::heap::Heap}, len: 5}}
+$6 = alloc::string::String {vec: alloc::vec::Vec<u8> {buf: alloc::raw_vec::RawVec<u8, alloc::heap::Heap> {ptr: core::ptr::Unique
+    <u8> {pointer: core::nonzero::NonZero<*const u8> (0x100624000 "hello\000"), _marker: core::marker::PhantomData<u8>}, cap: 
+        100, a: alloc::heap::Heap}, len: 5}}
 (gdb) p &buf.vec.buf
 $7 = (alloc::raw_vec::RawVec<u8, alloc::heap::Heap> *) 0x7fff5fbff958
 (gdb) x/8x &buf.vec.buf
@@ -268,7 +270,9 @@ In Rust, a variable that can "grow" during execution (i.e. strings, vecs) is all
 (gdb) info locals
 buf2 = &str {data_ptr: 0x10003c311 <str.c> "meowhello, world!\000", length: 4}
 buf1 = &str {data_ptr: 0x10003c310 <str.b> "hmeowhello, world!\000", length: 1}
-buf = alloc::string::String {vec: alloc::vec::Vec<u8> {buf: alloc::raw_vec::RawVec<u8, alloc::heap::Heap> {ptr: core::ptr::Unique<u8> {pointer: core::nonzero::NonZero<*const u8> (0x100624000 "hello\000"), _marker: core::marker::PhantomData<u8>}, cap: 100, a: alloc::heap::Heap}, len: 5}}
+buf = alloc::string::String {vec: alloc::vec::Vec<u8> {buf: alloc::raw_vec::RawVec<u8, alloc::heap::Heap> {ptr: 
+    core::ptr::Unique<u8> {pointer: core::nonzero::NonZero<*const u8> (0x100624000 "hello\000"), _marker: 
+        core::marker::PhantomData<u8>}, cap: 100, a: alloc::heap::Heap}, len: 5}}
 
 ```
 
