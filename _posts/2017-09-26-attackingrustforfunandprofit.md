@@ -7,6 +7,40 @@ short_description: trying to exploit rust with gdb
 image_preview: http://fazewp.fazemediainc.netdna-cdn.com/cms/wp-content/uploads/2015/06/coyote-3-2.jpg
 ---
 
+# Update
+
+As mentioned in the original post, it's been a while since I attempted any stack smashing, and I did something horribly wrong!
+
+![up/down/left/right are hard](https://imgs.xkcd.com/comics/wrong.png)
+
+Here's some more apples-to-apples Rust/C:
+
+```rust
+fn main() {
+    let local = "hello, world";
+}
+```
+
+![rust stack](https://i.imgur.com/iAnrBSm.png)
+
+The pointer to the string is circled in red, and the return address is in blue. This indicates that even a non-mutable &str is allocated on the heap, making a buffer overflow a less viable attack.
+
+
+```c
+int main ( int argc, char **argv ) {
+     char buf[100];
+     strcpy(buf, "hello, world\0");
+     return 0; 
+}
+
+```
+
+![c stack](https://i.imgur.com/USHixSN.png)
+
+The "hello, world" string is circled in red, and the return address is in blue. You can see that if an attacker continued to write past the bounds of the string, it would be easy to overwrite the return address.
+
+So, Rust pushes things to the stack the same way that C does (which is actually a relief to me, because I was really confused about how/why/what was happening). However, even an unmodifiable &str is still allocated on the heap, making stack smashing significantly more difficult.
+
 # Motivation
 I've recently been looking into the usage of unsafe code in Rust programs ([unsafe unicorn](https://github.com/avadacatavra/unsafe-unicorn)). I was curious about what happens when you use a C-style for loop in Rust.
 
@@ -39,6 +73,8 @@ It turns out that in the implementation of [slice](https://github.com/rust-lang/
 After a while, I decided that safe Rust would (rightly) prevent 'traditional' overflows, even in non-idiomatic Rust. Therefore, I was going to have to do terrible things and abuse `unsafe`.
 
 I don't look at assembly a ton--let me know if I've done something horribly, horribly wrong here.
+
+Some of this post is general playing around to see what Rust looks like in gdb, and some of this is actually attempting a contrived (stack) buffer overflow.
 
 # Buffer Overflows
 
@@ -130,7 +166,7 @@ Stack level 0, frame at 0x7fff5fbffa80:
 
 The top of the frame is at 0x7fff5fbffa80, the bottom is at 0x7fff5fbffa70 and the return instruction pointer is at 0x7fff5fbffa78. If we look at this address, we see `0x7fff5fbffa78:	0x00030ead	0x00000001`. What's happening here is that the main function returns to `maybe_catch_panic`. You can also see this address in the "saved rip" spot. Another thing to notice is that there's (yet another) rip = 0x1000032b2. This is the address for the main function, so a function called from main will have this set as their saved rip.
 
-The first thing that I noticed is how small the stack for each function is--it's only 2 bytes:
+The first thing that I noticed is how small the stack for each function is--it's only 2 addresses:
 
 address | |
 ---|---
@@ -149,7 +185,7 @@ void bar(char * p) {
 
 When you call a function in C, the argument is pushed to the stack. Then, when you allocate buf, it's allocated locally (i.e. on the stack, not the heap). This pushes the stack pointer down 100 bytes (stack grows down). This means that the end of the 100 byte buffer immediately precedes the stack pointer, which in turn immediately precedes the return instruction pointer.
 
-| | top of stack
+| | lower memory addresses
 ---|---
 ... | |
 100 byte buffer | |
@@ -157,7 +193,7 @@ rsp | |
 rip | |
 p | |
 
-At this point, it should be clear that a Rust stack looks very different than a C stack. The C stack has to fit all of the local variables. Moreover, those local variables are allocated right before the return instruction pointer, so if you can overwrite the buffer, you can set that return pointer to anything you'd like (say, some arbitrary code you wrote earlier in the buffer?).
+At this point, it should be clear that a Rust stack looks very different than a C stack. The C stack has to fit all of the local variables. Moreover, those local variables, including things like strings, are allocated right before the return instruction pointer, so if you can overwrite the buffer, you can set that return pointer to anything you'd like (say, some arbitrary code you wrote earlier in the buffer?).
 
 ## Local variables
 
@@ -200,7 +236,7 @@ chain4 | x | 0xf8e4
 | | y | 0xf8e8
 | | z | 0xf8ec
 
-The first thing to notice is that these local variables are *not* placed in the same place they would be in C. Instead of being located before the return instruction pointer, they come after it on the stack. This is important, because in a traditional buffer overflow, the buffer being overflowed is located before the return instruction pointer on the stack. Then, when you write out of bounds, you can modify that pointer and profit.
+This looks the same. It's like, why did I even bother with this post?
 
 
 ```
@@ -208,7 +244,7 @@ The first thing to notice is that these local variables are *not* placed in the 
    0x000000010000314f <+15>:	movl   $0x4,-0x8(%rbp)
    0x0000000100003156 <+22>:	mov    -0xc(%rbp),%eax
    0x0000000100003159 <+25>:	add    -0x8(%rbp),%eax
- ```
+```
 
 ## Local strings
 
@@ -257,9 +293,8 @@ That's...a little complicated. Let's break it down:
 * 0x7fff5fbff958: address of buf, which stores 0x100624000
 * 0x100624000: the pointer to the actual data
 
-Theres a few important things happening here:
-1. When we create a local variable, it goes *below* the return instruction pointer (i.e. you'd have to write backwards)
-2. We aren't necessarily pushing the actual variable to that spot--we might be pushing a pointer to a variable elsewhere in memory
+There's something important happening here:
+We aren't necessarily pushing the actual variable to that spot--we might be pushing a pointer to a variable elsewhere in memory
   * Above, in the `chain` example, the ints were pushed directly to the stack below
   * Here, we have both &str and String represented by pointers to the actual data
 
@@ -276,7 +311,7 @@ buf = alloc::string::String {vec: alloc::vec::Vec<u8> {buf: alloc::raw_vec::RawV
 
 ```
 
-When we look at all of this data together, there's another really interesting thing happening. Earlier, in the main function, I create a &str `s = "hello, world"`, which is located at 0x10003c315. When I create `buf1` and `buf2`, they are pushed to the memory directly before `s`, while the String `buf` is allocated to a different area of memory. Although these variables are initialized in the order `s, buf1, buf2`, notice that they are laid out at `buf1, buf2, s` instead of `buf2, buf1, s` as you might expect. This is because all of the local variables for a frame are allocated (uninitialized) upon frame-entry. They are then initialized by statements within the functions, and the compiler enforces that they can't be used until they've been initialized.
+When we look at all of this data together, there's another really interesting thing happening. Earlier, in the main function, I create a &str `s = "hello, world"`, which is located at 0x10003c315. When I create `buf1` and `buf2`, they are pushed to the memory directly before `s`, while the String `buf` is allocated to a different area of memory. Although these variables are initialized in the order `s, buf1, buf2`, notice that they are laid out at `buf1, buf2, s` instead of `buf2, buf1, s` as you might expect. This is (maybe) because all of the local variables for a frame are allocated (uninitialized) upon frame-entry. They are then initialized by statements within the functions, and the compiler enforces that they can't be used until they've been initialized.
 
 ## Buffer Overflow
 
@@ -320,7 +355,7 @@ fn main() {
 }
 ```
 
-I don't have ASLR turned on, so everything is in the same places in memory between builds. First, consider attempting to abuse `v` to overwrite the return instruction pointer--`v` is located at 0x100616008 and we would need to overwrite the memory at either 0x7fff5fbff9b8 (location of return instruction pointer) or 0x10000710b (location of the function we're returning to) in order to take control of the program's execution.
+I don't have ASLR turned on, so everything is in the same places in memory between builds. First, consider attempting to abuse `v` to overwrite the return instruction pointer--`v` is located at 0x100616008 and we would need to overwrite the memory at either 0x7fff5fbff9b8 (location of return instruction pointer) or 0x10000710b (location of the function we're returning to--not precisely a stack buffer overflow, but oh well) in order to take control of the program's execution.
 
 ```
 (gdb) info frame
@@ -342,9 +377,23 @@ $5 = (alloc::vec::Vec<i32> **) 0x7fff5fbff9a8
 0x100616008:	0x00000001
 ```
 
-This means that the question is: can a buffer at 0x100616008 overwrite memory at 0x7fff5fbff9b8? The stack grows down, so objects pushed to the stack later have lower memory addresses. 0x100616008 is a (much) lower memory address than 0x7fff5fbff9b8. The answer is no.
+This means that the question is: can a buffer at 0x100616008 overwrite memory at 0x7fff5fbff9b8? The stack grows down, so objects pushed to the stack later have lower memory addresses. 0x100616008 is a (much) lower memory address than 0x7fff5fbff9b8. In theory, we could overwrite this, but that is a *lot* of memory (if my calculator is right: 17591312306998 bytes) to write, and the chances of it working don't seem high to me.
 
-What about a buffer at 0x100616008 overwriting memory at 0x10000710b? The buffer is at a higher memory address, but there's 794079 bytes in between. If you try to print them all out, you'll get `Thread 2 received signal SIGBUS, Bus error.` And if you try to modify it?
+I did try to set the length of the vector to something absurd to see what would happen:
+
+```
+#[no_mangle]
+pub fn abuse_vec(v: &mut Vec<i32>) {
+    unsafe {
+        v.set_len(794079);
+    }
+
+    v[794077] = 0x00006ae4;
+    v[794077] = 0x00000001;
+    overflow(&v);
+}
+```
+
 
 ```
 (gdb) info frame
@@ -375,7 +424,7 @@ S-s-s-s-s-s-s-segfault!!!!!
 
 ![sorry, compiler](https://imgs.xkcd.com/comics/compiler_complaint.png)
 
-This approach is more promising, but I think it would be difficult to do, even in a very contrived example like this.
+What about a buffer at 0x100616008 overwriting memory at 0x10000710b? The buffer is at a higher memory address, meaning that it would need to write backwards. Due to type safety, this would be difficult--indices need to be `usize.`
 
 ## do\_bad\_things
 
@@ -394,7 +443,7 @@ $2 = &str {data_ptr: 0x10003c195 <str.g> "hello, world!\000", length: 13}
 
 Not really.
 
-Buffer overflows rely on the fact that the buffer is pushed to the stack before the return instruction pointer (and, of course, a missing bounds check). Rust sticks bounds checks all over the place, but even if you bypass those, either through abuse of `unsafe` or custom types that skip bounds checks, the stack memory layout makes it really difficult (if not impossible).
+Buffer overflows rely on the fact that the buffer is pushed to the stack before the return instruction pointer (and, of course, a missing bounds check). Rust sticks bounds checks all over the place, but even if you bypass those, either through abuse of `unsafe` or custom types that skip bounds checks, the stack memory layout makes it really difficult (if not impossible). A key protection is that Rust doesn't ever (?) put a 'growable' object like a &str/String/Vec on the stack. This means that an exploit would need to overwrite very large amounts of data, likely causing a crash in other ways before taking control of the program.
 
 This supports Rust's memory safety claims, as well as providing a fun way to play with rust-gdb.
 
