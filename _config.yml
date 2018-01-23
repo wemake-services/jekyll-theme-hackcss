@@ -6,12 +6,11 @@
 # 'jekyll serve'. If you change this file, please restart the server process.
 
 # Site settings
-title: jekyll-theme-hackcss
+title: Cats and security and stuff 
 description: > # this means to ignore newlines until "baseurl:"
-  A minimalistic theme for Jekyll, based on hack.css
-repository: https://github.com/wemake-services/jekyll-theme-hackcss
-baseurl: /jekyll-theme-hackcss  # the subpath of your site, e.g. /blog
-url: https://wemake-services.github.io  # the base hostname & protocol for your site
+  Musings on cats, Servo, security, etc.
+baseurl: ""  # the subpath of your site, e.g. /blog
+url: ""  # the base hostname & protocol for your site
 
 # Build settings
 markdown: kramdown
@@ -21,44 +20,46 @@ sass:
   style: compressed
 
 # Theme settings
-theme_mode: markdown  # choices are: 'dark', 'standard', 'markdown'
+theme_mode: dark  # choices are: 'dark', 'standard', 'markdown'
 
 # Customizations
-your_name: wemake.services
-email: mail@sobolevn.me
+your_name: Diane Hosfelt
+email: avadacatavra@gmail.com
 
 navigation:
   - text: Home
     url: /
-  - text: Docs
-    url: /docs
-  - text: Examples
-    url: /examples
+  - text: CV
+    url: /cv
+  - text: Projects
+    url: /projects
+  - text: whoami
+    url: /whoami
+
 
 projects:
-  - name: git-secret
-    description: A bash-tool to store your private data inside a git repository.
-    link: https://sobolevn.github.io/git-secret
-    image: https://github.com/sobolevn/git-secret/blob/7c9ae0b1853d4c15549027524121b9e40219fe47/images/git-secret-sm.png?raw=true
-  - name: awesome-cryptography
-    description: A curated list of cryptography resources and links.
-    link: https://github.com/sobolevn/awesome-cryptography
-    image: https://pbs.twimg.com/profile_images/751426570607271937/vGxpniun_400x400.jpg
-  - name: ecto_autoslug_field
-    description: Automatically creates slugs for your Ecto models.
-    link: https://github.com/sobolevn/ecto_autoslug_field
-  - name: django-split-settings
-    description: Organize Django settings into multiple files and directories. Easily override and modify settings. Use wildcards and optional settings files.
-    link: https://github.com/sobolevn/django-split-settings
+  - name: servo
+    description: rust-based browser engine
+    link: https://github.com/servo/servo
+    image: https://raw.githubusercontent.com/servo/servo/master/tests/html/doge-servo.jpg
+  - name: unsafe-unicorn
+    description: a way to analyze Rust code for unsafe usage
+    link: https://github.com/avadacatavra/unsafe_unicorn
+    image: https://www.spreadshirt.ie/image-server/v1/mp/designs/137307882,width=178,height=178/a-rabid-unicorn.png
+  - name: automated detection and classification of encryption algorithms in binary programs using machine learning
+    description: masters thesis, johns hopkins, wordy title required
+    link: https://arxiv.org/abs/1503.01186
+    image: https://i.imgur.com/VC8fr9D.png
 
 social:
   - service: github
-    username: sobolevn
-    link: https://github.com/sobolevn
+    username: avadacatavra
+    link: https://github.com/avadacatavra
   - service: twitter
-    username: sobolevn
-    link: https://twitter.com/sobolevn
+    username: avadacatavra
+    link: https://twitter.com/avadacatavra
 
 # Plugins
 gems:
   - jekyll-seo-tag
+

@@ -1,18 +1,17 @@
 ---
 layout: default
+permalink: examples
 ---
 
-<div>
+<section>
+  <h1>Projects</h1>
 
-  <section>
-    <h1>avadaCATavra</h1>
+  <p>
+    I do things. Mostly with Rust. Sometimes with security/networking.
+  </p>
+</section>
 
-    <p>
-      Research Engineer, Servo 
-    </p>
-  </section>
-
-  <section>
+<section>
   <h2>Posts</h2>
 
   {% for post in site.posts %}
@@ -57,5 +56,38 @@ layout: default
   {% endfor %}
 </section>
 
+<section>
 
-</div>
+  <h2>Cards</h2>
+
+  <div class="grid t-hackcss-cards">
+
+    {% for project in site.projects %}
+
+    <div class="cell -6of12 t-hackcss-cards-cell">
+      <div class="card">
+        <header class="card-header">{{ project.name }}</header>
+        <div class="card-content">
+          <div class="inner">
+
+            {% if project.image %}
+            <img src="{{ project.image }}" class="t-hackcss-cards-image"
+                 alt="{{ project.name }}"
+                 title="{{ project.name }}" />
+            {% endif %}
+
+            <p class="t-hackcss-cards-text">{{ project.description }}</p>
+            <p class="t-hackcss-cards-link">
+              <a href="{{ project.link }}" title="{{ project.name }}" target="_blank">
+                 {{ project.name }}
+               </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% endfor %}
+
+  </div>
+</section>
