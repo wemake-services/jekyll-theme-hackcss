@@ -1,6 +1,6 @@
 # jekyll-theme-hackcss
 
-[Dead simple CSS framework](http://hackcss.com/) now with Jekyll.
+[Dead simple CSS framework](https://hackcss.egoist.moe/) now with Jekyll.
 
 Mobile-ready, modern, stylish, simple.
 
