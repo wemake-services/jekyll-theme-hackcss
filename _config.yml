@@ -9,9 +9,9 @@
 title: Seo-faper의 블로그
 description: > # this means to ignore newlines until "baseurl:"
   A minimalistic theme for Jekyll, based on hack.css
-repository: https://github.com/Seo-Faper/Seo-faper.github.io
+repository: https://github.com/Seo-Faper/
 
-baseurl: /jekyll-theme-hackcss  # the subpath of your site, e.g. /blog
+baseurl: /  # the subpath of your site, e.g. /blog
 url: https://seo-faper.github.io  # the base hostname & protocol for your site
 
 # Build settings
