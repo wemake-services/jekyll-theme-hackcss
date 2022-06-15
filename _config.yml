@@ -53,11 +53,8 @@ projects:
 
 social:
   - service: github
-    username: sobolevn
-    link: https://github.com/sobolevn
-  - service: twitter
-    username: sobolevn
-    link: https://twitter.com/sobolevn
+    username: seo-faper
+    link: https://github.com/seo-faper
 
 # Plugins
 gems:
