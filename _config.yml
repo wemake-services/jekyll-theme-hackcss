@@ -8,7 +8,7 @@
 # Site settings
 title: Seo-faper의 블로그
 description: > # this means to ignore newlines until "baseurl:"
-  A minimalistic theme for Jekyll, based on hack.css
+  Seo-faper의 아무거나 다 쓰는 블로그
 repository: https://github.com/Seo-Faper/
 
 baseurl: /  # the subpath of your site, e.g. /blog
@@ -22,7 +22,7 @@ sass:
   style: compressed
 
 # Theme settings
-theme_mode: standard  # choices are: 'dark', 'standard', 'markdown'
+theme_mode: markdown  # choices are: 'dark', 'standard', 'markdown'
 
 # Customizations
 your_name: seo-faper
